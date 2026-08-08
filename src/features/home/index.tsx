@@ -1,6 +1,6 @@
 function Home() {
   return (
-    <header className="mx-auto max-w-3xl px-4 pt-16 pb-8 text-center">
+    <header className="mx-auto px-4 pt-16 pb-4 text-center">
       <span className="inline-block rounded-full border border-slate-700 bg-slate-900/60 px-3 py-1 text-xs font-medium uppercase tracking-widest text-emerald-400">
         JPY → US Stocks
       </span>

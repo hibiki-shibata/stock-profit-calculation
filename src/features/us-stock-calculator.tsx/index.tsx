@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import { calculate } from "./lib/calculate";
 import { COMMISSION_CAP_THRESHOLD_USD, COMMISSION_CAP_USD, COMMISSION_RATE } from "./lib/constants";
 import { formatNumber, formatPercent } from "./lib/format";
@@ -6,11 +6,25 @@ import { Field } from "./components/Field";
 import { ResultRow } from "./components/ResultRow";
 
 export default function StockProfitCalculator() {
-  const [stockPriceAtBuy, setStockPriceAtBuy] = useState(100)
-  const [stockPriceAtSell, setStockPriceAtSell] = useState(120)
-  const [jpyPerUsdAtBuy, setJpyPerUsdAtBuy] = useState(150)
-  const [jpyPerUsdAtSell, setJpyPerUsdAtSell] = useState(150)
-  const [totalInvestJpy, setTotalInvestJpy] = useState(1000000)
+  const [stockPriceAtBuy, setStockPriceAtBuy] = useState(360);
+  const [stockPriceAtSell, setStockPriceAtSell] = useState(380);
+  const [jpyPerUsdAtBuy, setJpyPerUsdAtBuy] = useState(160);
+  const [jpyPerUsdAtSell, setJpyPerUsdAtSell] = useState(160);
+  const [totalInvestJpy, setTotalInvestJpy] = useState(1000000);
+
+  // One ref per input, in tab order. Pressing Enter focuses the next one;
+  // on the last field it can submit / blur instead (see onEnter below).
+  const inputRefs = useRef<Array<HTMLInputElement | null>>([]);
+
+  const focusNext = (index: number) => {
+    const next = inputRefs.current[index + 1];
+    if (next) {
+      next.focus();
+      next.select();
+    } else {
+      inputRefs.current[index]?.blur();
+    }
+  };
 
   const result = useMemo(
     () =>
@@ -25,7 +39,7 @@ export default function StockProfitCalculator() {
   );
 
   return (
-    <div className="bg-slate-950 px-4 py-10 text-slate-100">
+    <div className="min-h-screen bg-slate-950 px-4 py-10 text-slate-100">
       <div className="mx-auto grid w-full max-w-3xl gap-6 md:grid-cols-2">
         <div className="rounded-2xl border border-slate-800 bg-slate-900/50 p-6">
           <h2 className="mb-4 text-sm font-semibold uppercase tracking-wide text-slate-400">
@@ -33,37 +47,49 @@ export default function StockProfitCalculator() {
           </h2>
           <div className="grid gap-4">
             <Field
+              ref={(el) => { inputRefs.current[0] = el; }}
               label="Stock price at buy"
               suffix="USD"
               value={stockPriceAtBuy}
               onChange={setStockPriceAtBuy}
+              step={10}
+              onEnter={() => focusNext(0)}
             />
             <Field
+              ref={(el) => { inputRefs.current[1] = el; }}
               label="Stock price at sell"
               suffix="USD"
               value={stockPriceAtSell}
               onChange={setStockPriceAtSell}
+              step={10}
+              onEnter={() => focusNext(1)}
             />
             <Field
+              ref={(el) => { inputRefs.current[2] = el; }}
               label="JPY/USD at buy"
               suffix="JPY"
               value={jpyPerUsdAtBuy}
               onChange={setJpyPerUsdAtBuy}
-              step={1}
+              step={10}
+              onEnter={() => focusNext(2)}
             />
             <Field
+              ref={(el) => { inputRefs.current[3] = el; }}
               label="JPY/USD at sell"
               suffix="JPY"
               value={jpyPerUsdAtSell}
               onChange={setJpyPerUsdAtSell}
-              step={1}
+              step={10}
+              onEnter={() => focusNext(3)}
             />
             <Field
+              ref={(el) => { inputRefs.current[4] = el; }}
               label="Total invested"
               suffix="JPY"
               value={totalInvestJpy}
               onChange={setTotalInvestJpy}
-              step={100000}
+              step={10000}
+              onEnter={() => focusNext(4)}
             />
           </div>
           <p className="mt-4 text-xs leading-relaxed text-slate-500">
