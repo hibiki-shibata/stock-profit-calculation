@@ -17,7 +17,7 @@ const INITIAL_MESSAGES: ChatMessage[] = [
   },
 ];
 
-export default function SupportChatWidget() {
+export  function SupportChatWidget() {
   const [isOpen, setIsOpen] = useState(false);
   const form = useRef<HTMLFormElement>(null);
   const [messages, setMessages] = useState<ChatMessage[]>(INITIAL_MESSAGES);
@@ -122,12 +122,20 @@ export default function SupportChatWidget() {
                 <MapPin size={11} /> Tokyo, Japan
               </span>
               <a
-                href="https://hibiki-shibata.github.io/ride.driver.frontend/home"
+                href="https://hibiki-shibata.github.io"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex items-center gap-1 hover:text-emerald-400"
               >
                 <ExternalLink size={11} /> Developer Profile
+              </a>
+              <a
+                href="https://github.com/hibiki-shibata/stock-profit-calculation"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-1 hover:text-emerald-400"
+              >
+                <ExternalLink size={11} /> Source Code
               </a>
             </div>
           </div>
