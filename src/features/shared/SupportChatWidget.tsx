@@ -1,7 +1,7 @@
 import { useRef, useState } from "react";
 import type { FormEvent } from "react";
 import emailjs from "@emailjs/browser";
-import { MessageCircle, Send, X, MapPin, Phone, Mail, ExternalLink } from "lucide-react";
+import { MessageCircle, Send, X, MapPin, ExternalLink } from "lucide-react";
 
 interface ChatMessage {
   id: string;
@@ -121,19 +121,13 @@ export default function SupportChatWidget() {
               <span className="flex items-center gap-1">
                 <MapPin size={11} /> Tokyo, Japan
               </span>
-              <span className="flex items-center gap-1">
-                <Phone size={11} /> (+81) 70-8973-7939
-              </span>
-              <span className="flex items-center gap-1">
-                <Mail size={11} /> hibiki.shibata@wolt.com
-              </span>
               <a
                 href="https://hibiki-shibata.github.io/ride.driver.frontend/home"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex items-center gap-1 hover:text-emerald-400"
               >
-                <ExternalLink size={11} /> Portfolio
+                <ExternalLink size={11} /> Developer Profile
               </a>
             </div>
           </div>
