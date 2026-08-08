@@ -39,7 +39,7 @@ export default function StockProfitCalculator() {
   );
 
   return (
-    <div className="bg-slate-950 px-4 py-10 text-slate-100">
+    <div className="px-4 py-10">
       <div className="mx-auto grid w-full max-w-3xl gap-6 md:grid-cols-2">
         <div className="rounded-2xl border border-slate-800 bg-slate-900/50 p-6">
           <h2 className="mb-4 text-sm font-semibold uppercase tracking-wide text-slate-400">
