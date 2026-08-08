@@ -1,4 +1,4 @@
-function Home() {
+export default function Title() {
   return (
     <header className="mx-auto px-4 pt-16 pb-4 text-center">
       <span className="inline-block rounded-full border border-slate-700 bg-slate-900/60 px-3 py-1 text-xs font-medium uppercase tracking-widest text-emerald-400">
@@ -17,7 +17,5 @@ function Home() {
         Estimate net profit in JPY after currency conversion and Rakuten Securities commission.
       </p>
     </header>
-  );
+  )
 }
-
-export default Home;
