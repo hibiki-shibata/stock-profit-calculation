@@ -10,7 +10,7 @@ export default function Title() {
         <span className="bg-gradient-to-r from-emerald-400 to-sky-400 bg-clip-text text-transparent">
           Expected Return
         </span>{" "}
-        Calculator
+        Simulator
       </h1>
 
       <p className="mt-4 text-sm text-slate-400 sm:text-base">
