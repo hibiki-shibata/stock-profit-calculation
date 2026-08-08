@@ -6,10 +6,10 @@ import { Field } from "./components/Field";
 import { ResultRow } from "./components/ResultRow";
 
 export default function StockProfitCalculator() {
-  const [stockPriceAtBuy, setStockPriceAtBuy] = useState(0)
-  const [stockPriceAtSell, setStockPriceAtSell] = useState(0)
-  const [jpyPerUsdAtBuy, setJpyPerUsdAtBuy] = useState(155)
-  const [jpyPerUsdAtSell, setJpyPerUsdAtSell] = useState(155)
+  const [stockPriceAtBuy, setStockPriceAtBuy] = useState(100)
+  const [stockPriceAtSell, setStockPriceAtSell] = useState(120)
+  const [jpyPerUsdAtBuy, setJpyPerUsdAtBuy] = useState(150)
+  const [jpyPerUsdAtSell, setJpyPerUsdAtSell] = useState(150)
   const [totalInvestJpy, setTotalInvestJpy] = useState(1000000)
 
   const result = useMemo(
@@ -63,7 +63,7 @@ export default function StockProfitCalculator() {
               suffix="JPY"
               value={totalInvestJpy}
               onChange={setTotalInvestJpy}
-              step={10000}
+              step={100000}
             />
           </div>
           <p className="mt-4 text-xs leading-relaxed text-slate-500">
