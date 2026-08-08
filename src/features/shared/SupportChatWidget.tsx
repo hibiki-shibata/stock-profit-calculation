@@ -17,7 +17,7 @@ const INITIAL_MESSAGES: ChatMessage[] = [
   },
 ];
 
-export  function SupportChatWidget() {
+export function SupportChatWidget() {
   const [isOpen, setIsOpen] = useState(false);
   const form = useRef<HTMLFormElement>(null);
   const [messages, setMessages] = useState<ChatMessage[]>(INITIAL_MESSAGES);
@@ -98,11 +98,10 @@ export  function SupportChatWidget() {
             {messages.map((m) => (
               <div key={m.id} className={`flex ${m.role === "user" ? "justify-end" : "justify-start"}`}>
                 <div
-                  className={`max-w-[85%] rounded-2xl px-3.5 py-2 text-[13px] leading-relaxed ${
-                    m.role === "user"
+                  className={`max-w-[85%] rounded-2xl px-3.5 py-2 text-[13px] leading-relaxed ${m.role === "user"
                       ? "rounded-br-sm bg-emerald-500 text-slate-950"
                       : "rounded-bl-sm bg-slate-800 text-slate-200"
-                  }`}
+                    }`}
                 >
                   {m.text}
                 </div>
