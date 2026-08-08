@@ -7,8 +7,8 @@ help:
 deploy:
 	@echo "Compiling the project..."
 	pnpm run build
-	cp ~/stock-calculation/dist/assets/*.js ~/stock-calculation/docs/assets/*.js
-	cp ~/stock-calculation/dist/assets/*.css ~/stock-calculation/docs/assets/*.css
+	cp ~/stock-profit-calculation/dist/assets/*.js ~/stock-profit-calculation/docs/assets/*.js
+	cp ~/stock-profit-calculation/dist/assets/*.css ~/stock-profit-calculation/docs/assets/*.css
 	git add .
 	git commit -m "Compliation done & deploying"
 	git push
