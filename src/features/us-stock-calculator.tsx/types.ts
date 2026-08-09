@@ -8,9 +8,9 @@ export interface CalculationInput {
 
 export interface CalculationResult {
   totalInvestUsd: number;
-  commissionUsd: number;
   growthRate: number;
-  profitPerStockUsd: number;
+  commissionJpy: number;
+  taxAmountJpy: number;
   netProfitUsd: number;
   netProfitJpy: number;
   isSuccess: boolean;

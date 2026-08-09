@@ -6,8 +6,8 @@ import { Field } from "./components/Field";
 import { ResultRow } from "./components/ResultRow";
 
 export default function StockProfitCalculator() {
-  const [stockPriceAtBuy, setStockPriceAtBuy] = useState(360);
-  const [stockPriceAtSell, setStockPriceAtSell] = useState(380);
+  const [stockPriceAtBuy, setStockPriceAtBuy] = useState(10);
+  const [stockPriceAtSell, setStockPriceAtSell] = useState(13);
   const [jpyPerUsdAtBuy, setJpyPerUsdAtBuy] = useState(160);
   const [jpyPerUsdAtSell, setJpyPerUsdAtSell] = useState(160);
   const [totalInvestJpy, setTotalInvestJpy] = useState(1000000);
@@ -52,7 +52,7 @@ export default function StockProfitCalculator() {
               suffix="USD"
               value={stockPriceAtBuy}
               onChange={setStockPriceAtBuy}
-              step={10}
+              step={1}
               onEnter={() => focusNext(0)}
             />
             <Field
@@ -61,7 +61,7 @@ export default function StockProfitCalculator() {
               suffix="USD"
               value={stockPriceAtSell}
               onChange={setStockPriceAtSell}
-              step={10}
+              step={1}
               onEnter={() => focusNext(1)}
             />
             <Field
@@ -70,7 +70,7 @@ export default function StockProfitCalculator() {
               suffix="JPY"
               value={jpyPerUsdAtBuy}
               onChange={setJpyPerUsdAtBuy}
-              step={10}
+              step={1}
               onEnter={() => focusNext(2)}
             />
             <Field
@@ -79,7 +79,7 @@ export default function StockProfitCalculator() {
               suffix="JPY"
               value={jpyPerUsdAtSell}
               onChange={setJpyPerUsdAtSell}
-              step={10}
+              step={1}
               onEnter={() => focusNext(3)}
             />
             <Field
@@ -92,10 +92,6 @@ export default function StockProfitCalculator() {
               onEnter={() => focusNext(4)}
             />
           </div>
-          <p className="mt-4 text-xs leading-relaxed text-slate-500">
-            Commission: {(COMMISSION_RATE * 100).toFixed(3)}% of trade value, capped
-            at ${COMMISSION_CAP_USD} above ~${formatNumber(COMMISSION_CAP_THRESHOLD_USD)}.
-          </p>
         </div>
 
         <div className="rounded-2xl border border-slate-800 bg-slate-900/50 p-6">
@@ -114,12 +110,12 @@ export default function StockProfitCalculator() {
               negative={result.growthRate < 0}
             />
             <ResultRow
-              label="Profit per stock"
-              value={`${formatNumber(result.profitPerStockUsd)} USD`}
+              label="Commission"
+              value={`${formatNumber(result.commissionJpy)} JPY`}
             />
             <ResultRow
-              label="Commission"
-              value={`${formatNumber(result.commissionUsd)} USD`}
+              label="Tax"
+              value={`${formatNumber(result.taxAmountJpy)} JPY`}
             />
             <ResultRow
               label="Total invested"
@@ -142,6 +138,15 @@ export default function StockProfitCalculator() {
               positive={result.netProfitJpy > 0}
               negative={result.netProfitJpy < 0}
             />
+            <div className="mt-6 text-xs leading-relaxed text-slate-500">
+              <p>
+                1. Commission: {(COMMISSION_RATE * 100).toFixed(3)}% of trade value, capped
+                at ${COMMISSION_CAP_USD} above ~${formatNumber(COMMISSION_CAP_THRESHOLD_USD)}.
+              </p>
+              <p>
+                2. Tax: 20.315% of realized profits.
+              </p>
+            </div>
           </div>
         </div>
       </div>

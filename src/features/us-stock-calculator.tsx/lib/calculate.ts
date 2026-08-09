@@ -1,5 +1,15 @@
-import { COMMISSION_CAP_THRESHOLD_USD, COMMISSION_CAP_USD, COMMISSION_RATE } from "./constants";
+import { COMMISSION_CAP_THRESHOLD_USD, COMMISSION_CAP_USD, COMMISSION_RATE, JPN_CAPITAL_GAIN_TAX_RATE } from "./constants";
 import type { CalculationInput, CalculationResult } from '../types'
+
+function calcComissionUsd(tradeAmountUsd: number): number {
+  return tradeAmountUsd < COMMISSION_CAP_THRESHOLD_USD
+    ? tradeAmountUsd * COMMISSION_RATE
+    : COMMISSION_CAP_USD;
+}
+
+function calcTax(taxableAmount: number): number {
+  return (taxableAmount > 0) ? taxableAmount * JPN_CAPITAL_GAIN_TAX_RATE : 0
+}
 
 export function calculate({
   stockPriceAtBuy,
@@ -8,46 +18,32 @@ export function calculate({
   jpyPerUsdAtSell,
   totalInvestJpy,
 }: CalculationInput): CalculationResult {
-  const totalInvestUsd = totalInvestJpy / jpyPerUsdAtBuy;
+  const totalInvestUsd: number = totalInvestJpy / jpyPerUsdAtBuy;
 
-  const commissionUsd =
-    totalInvestUsd < COMMISSION_CAP_THRESHOLD_USD
-      ? totalInvestUsd * COMMISSION_RATE
-      : COMMISSION_CAP_USD;
+  const growthRate: number = (stockPriceAtSell - stockPriceAtBuy) / stockPriceAtBuy
 
-  const growthRate = (stockPriceAtSell - stockPriceAtBuy) / stockPriceAtBuy;
-  const profitPerStockUsd = stockPriceAtBuy * growthRate;
-  const netProfitUsd = totalInvestUsd * growthRate - commissionUsd;
-  const netProfitJpy = netProfitUsd * jpyPerUsdAtSell;
+  const realizedProfitUsd: number = totalInvestUsd * growthRate
 
+  const sellAmountJpy = (totalInvestUsd + realizedProfitUsd) * jpyPerUsdAtSell
+
+  // Comissions
+  const commissionAtBuyJpy: number = calcComissionUsd(totalInvestUsd) * jpyPerUsdAtBuy
+  const commissionAtSellJpy: number = calcComissionUsd(totalInvestUsd + realizedProfitUsd) * jpyPerUsdAtSell
+  const commissionJpy: number = commissionAtBuyJpy + commissionAtSellJpy
+
+  const taxableProfitJpy = sellAmountJpy - totalInvestJpy - commissionJpy
+
+  const taxAmountJpy: number = calcTax(taxableProfitJpy)
+
+  const netProfitJpy = taxableProfitJpy - taxAmountJpy
+  const netProfitUsd = netProfitJpy / jpyPerUsdAtSell
   return {
     totalInvestUsd,
-    commissionUsd,
+    commissionJpy,
     growthRate,
-    profitPerStockUsd,
+    taxAmountJpy,
     netProfitUsd,
     netProfitJpy,
     isSuccess: netProfitJpy > 0,
   };
 }
-
-/* Example test (Vitest/Jest), kept here as a comment for reference — move into
-   calculate.test.ts in a real project:
-
-import { describe, expect, it } from "vitest";
-import { calculate } from "./calculate";
-
-describe("calculate", () => {
-  it("matches the known reference case", () => {
-    const result = calculate({
-      stockPriceAtBuy: 355,
-      stockPriceAtSell: 450,
-      jpyPerUsdAtBuy: 158,
-      jpyPerUsdAtSell: 168,
-      totalInvestJpy: 4_200_000,
-    });
-    expect(result.isSuccess).toBe(true);
-    expect(result.commissionUsd).toBeCloseTo(22, 5); // above the cap threshold
-  });
-});
-*/

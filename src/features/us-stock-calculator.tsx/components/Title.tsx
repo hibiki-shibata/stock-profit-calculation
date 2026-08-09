@@ -14,7 +14,7 @@ export function Title() {
       </h1>
 
       <p className="mt-4 text-sm text-slate-400 sm:text-base">
-        Estimate net profit in JPY after currency conversion and Rakuten Securities commission.
+        Estimate net profit in JPY after currency conversion and Rakuten & SBI Securities commission.
       </p>
     </header>
   )

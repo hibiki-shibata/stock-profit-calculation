@@ -27,9 +27,12 @@ export const Field = forwardRef<HTMLInputElement, FieldProps>(
           <input
             ref={ref}
             type="number"
-            value={value}
+            value={value === 0 ? '0' : String(value)}
             step={step}
-            onChange={(e) => onChange(parseFloat(e.target.value) || 0)}
+            onChange={(e) => {
+              const inputValue: number = parseFloat(e.target.value) || 0
+              onChange(inputValue >= 0 ? inputValue : 0)
+            }}
             onKeyDown={handleKeyDown}
             className="w-full bg-transparent text-slate-100 outline-none [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
           />
