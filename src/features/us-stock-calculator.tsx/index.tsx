@@ -1,17 +1,16 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import { calculate } from "./lib/calculate";
 import { COMMISSION_CAP_THRESHOLD_USD, COMMISSION_CAP_USD, COMMISSION_RATE } from "./lib/constants";
 import { formatNumber, formatPercent } from "./lib/format";
 import { Field } from "./components/Field";
 import { ResultRow } from "./components/ResultRow";
-import { getJpyPricePerUsd } from "./api/getJpyPerUsd";
 
 export default function StockProfitCalculator() {
   const [stockPriceAtBuy, setStockPriceAtBuy] = useState(10);
   const [stockPriceAtSell, setStockPriceAtSell] = useState(12);
-  const [jpyPerUsdAtBuy, setJpyPerUsdAtBuy] = useState(0);
-  const [jpyPerUsdAtSell, setJpyPerUsdAtSell] = useState(0);
-  const [totalInvestJpy, setTotalInvestJpy] = useState(1000);
+  const [jpyPerUsdAtBuy, setJpyPerUsdAtBuy] = useState(150);
+  const [jpyPerUsdAtSell, setJpyPerUsdAtSell] = useState(150);
+  const [totalInvestJpy, setTotalInvestJpy] = useState(10000);
 
   const inputRefs = useRef<Array<HTMLInputElement | null>>([]);
 
@@ -24,15 +23,6 @@ export default function StockProfitCalculator() {
       inputRefs.current[index]?.blur();
     }
   }
-
-  useEffect(() => {
-    const fetchJpyPrice = async () => {
-      const price = await getJpyPricePerUsd()
-      setJpyPerUsdAtBuy(price)
-      setJpyPerUsdAtSell(price)
-    }
-    fetchJpyPrice();
-  }, [])
 
   const result = useMemo(
     () =>
@@ -147,7 +137,7 @@ export default function StockProfitCalculator() {
               negative={result.netProfitJpy < 0}
             />
             <div className="relative group mt-3">
-              <span className="absolute right-0 text-slate-400 font-bold">
+              <span className="absolute group-hover:hidden right-0 text-slate-400 font-bold">
                 ⓘ
               </span>
               <div className="hidden group-hover:block w-80 rounded-lg p-3 border border-slate-800 text-xs text-slate-400">
