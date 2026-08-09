@@ -1,19 +1,18 @@
-import { useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { calculate } from "./lib/calculate";
 import { COMMISSION_CAP_THRESHOLD_USD, COMMISSION_CAP_USD, COMMISSION_RATE } from "./lib/constants";
 import { formatNumber, formatPercent } from "./lib/format";
 import { Field } from "./components/Field";
 import { ResultRow } from "./components/ResultRow";
+import { getJpyPricePerUsd } from "./api/getJpyPerUsd";
 
 export default function StockProfitCalculator() {
   const [stockPriceAtBuy, setStockPriceAtBuy] = useState(10);
-  const [stockPriceAtSell, setStockPriceAtSell] = useState(13);
-  const [jpyPerUsdAtBuy, setJpyPerUsdAtBuy] = useState(160);
-  const [jpyPerUsdAtSell, setJpyPerUsdAtSell] = useState(160);
-  const [totalInvestJpy, setTotalInvestJpy] = useState(1000000);
+  const [stockPriceAtSell, setStockPriceAtSell] = useState(12);
+  const [jpyPerUsdAtBuy, setJpyPerUsdAtBuy] = useState(0);
+  const [jpyPerUsdAtSell, setJpyPerUsdAtSell] = useState(0);
+  const [totalInvestJpy, setTotalInvestJpy] = useState(1000);
 
-  // One ref per input, in tab order. Pressing Enter focuses the next one;
-  // on the last field it can submit / blur instead (see onEnter below).
   const inputRefs = useRef<Array<HTMLInputElement | null>>([]);
 
   const focusNext = (index: number) => {
@@ -24,7 +23,16 @@ export default function StockProfitCalculator() {
     } else {
       inputRefs.current[index]?.blur();
     }
-  };
+  }
+
+  useEffect(() => {
+    const fetchJpyPrice = async () => {
+      const price = await getJpyPricePerUsd()
+      setJpyPerUsdAtBuy(price)
+      setJpyPerUsdAtSell(price)
+    }
+    fetchJpyPrice();
+  }, [])
 
   const result = useMemo(
     () =>
@@ -88,7 +96,7 @@ export default function StockProfitCalculator() {
               suffix="JPY"
               value={totalInvestJpy}
               onChange={setTotalInvestJpy}
-              step={10000}
+              step={stockPriceAtBuy * jpyPerUsdAtBuy}
               onEnter={() => focusNext(4)}
             />
           </div>
@@ -138,14 +146,19 @@ export default function StockProfitCalculator() {
               positive={result.netProfitJpy > 0}
               negative={result.netProfitJpy < 0}
             />
-            <div className="mt-6 text-xs leading-relaxed text-slate-500">
-              <p>
-                1. Commission: {(COMMISSION_RATE * 100).toFixed(3)}% of trade value, capped
-                at ${COMMISSION_CAP_USD} above ~${formatNumber(COMMISSION_CAP_THRESHOLD_USD)}.
-              </p>
-              <p>
-                2. Tax: 20.315% of realized profits.
-              </p>
+            <div className="relative group mt-3">
+              <span className="absolute right-0 text-slate-400 font-bold">
+                ⓘ
+              </span>
+              <div className="hidden group-hover:block w-80 rounded-lg p-3 border border-slate-800 text-xs text-slate-400">
+                <p>
+                  1. Commission: {(COMMISSION_RATE * 100).toFixed(3)}% of trade value, capped
+                  at ${COMMISSION_CAP_USD} above ~${formatNumber(COMMISSION_CAP_THRESHOLD_USD)}.
+                </p>
+                <p className="mt-1">
+                  2. Tax: 20.315% of realized profits.
+                </p>
+              </div>
             </div>
           </div>
         </div>
