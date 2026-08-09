@@ -29,7 +29,7 @@ export function calculate({
   // Comissions
   const commissionAtBuyJpy: number = calcComissionUsd(totalInvestUsd) * jpyPerUsdAtBuy
   const commissionAtSellJpy: number = calcComissionUsd(totalInvestUsd + realizedProfitUsd) * jpyPerUsdAtSell
-  const commissionJpy: number = commissionAtBuyJpy + commissionAtSellJpy
+  const commissionJpy: number = Math.round(commissionAtBuyJpy + commissionAtSellJpy)
 
   const taxableProfitJpy = sellAmountJpy - totalInvestJpy - commissionJpy
 
