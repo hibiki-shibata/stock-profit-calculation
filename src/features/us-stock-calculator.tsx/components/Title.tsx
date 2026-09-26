@@ -6,16 +6,23 @@ export function Title() {
       </span>
 
       <h1 className="mt-5 text-4xl font-bold leading-tight tracking-tight text-slate-100 sm:text-5xl md:text-6xl">
-        Foreign Stock{" "}
+        Foreign Shares{" "}
         <span className="bg-gradient-to-r from-emerald-400 to-sky-400 bg-clip-text text-transparent">
-          Expected Return
+          Net profit
         </span>{" "}
         Calculator
       </h1>
 
       <p className="mt-4 text-sm text-slate-400 sm:text-base">
-        Estimate net profit in JPY after currency conversion and Rakuten & SBI Securities commission.
+        Support Rakuten or SBI Securities' trades.
       </p>
+
+      <p className="mt-2 text-xs text-blue-400 underline sm:text-base">
+        <a href="https://www.google.com/finance/beta/#lists" target="_blank">
+          See real time trades
+        </a>
+      </p>
+
     </header>
   )
 }
