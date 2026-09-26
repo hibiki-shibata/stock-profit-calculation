@@ -1,7 +1,7 @@
 .phony: list of available make commands
 help:
 	@echo "Available commands:"
-	@echo "  compile - Compile the project and prepare for GitHub page deployment"
+	@echo "  deploy - Compile the project and prepare for GitHub page deployment"
 
 .phony: compile everything and prepare for github page deployment
 deploy:

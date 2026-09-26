@@ -14,7 +14,7 @@ export default function StockProfitCalculator() {
 
   const inputRefs = useRef<Array<HTMLInputElement | null>>([]);
 
-  const focusNext = (index: number) => {
+  function focusNext(index: number) {
     const next = inputRefs.current[index + 1];
     if (next) {
       next.focus();
@@ -22,6 +22,14 @@ export default function StockProfitCalculator() {
     } else {
       inputRefs.current[index]?.blur();
     }
+  }
+
+  function resetButton() {
+    setStockPriceAtBuy(0)
+    setStockPriceAtSell(0)
+    setJpyPerUsdAtBuy(0)
+    setJpyPerUsdAtSell(0)
+    setTotalInvestJpy(0)
   }
 
   const result = useMemo(
@@ -89,6 +97,15 @@ export default function StockProfitCalculator() {
               step={stockPriceAtBuy * jpyPerUsdAtBuy}
               onEnter={() => focusNext(4)}
             />
+          </div>
+          <div className="mt-10 flex justify-center">
+            <button 
+            className="py-2 items-center justify-center rounded-lg px-3 font-medium bg-emerald-600 hover:bg-emerald-500 active:bg-emerald-600 
+            text-gray-900"
+            onClick={resetButton}
+            >
+              Reset
+            </button>
           </div>
         </div>
 

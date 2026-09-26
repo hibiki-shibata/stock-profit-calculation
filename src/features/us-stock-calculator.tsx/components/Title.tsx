@@ -6,7 +6,7 @@ export function Title() {
       </span>
 
       <h1 className="mt-5 text-4xl font-bold leading-tight tracking-tight text-slate-100 sm:text-5xl md:text-6xl">
-        US Stock{" "}
+        Foreign Stock{" "}
         <span className="bg-gradient-to-r from-emerald-400 to-sky-400 bg-clip-text text-transparent">
           Expected Return
         </span>{" "}
